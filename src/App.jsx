@@ -4,8 +4,10 @@ import Footer from "./components/Footer";
 import Timetable from "./components/Timetable";
 import ActionBar from "./components/ActionBar";
 import SelectedCourses from "./components/SelectedCourses";
+import Home from "./components/Home";
 
 export default function App() {
+  const [showHome, setShowHome] = useState(true);
   const [courseSlots, setCourseSlots] = useState([]);
   const [manualSlots, setManualSlots] = useState([]);
   const [selectedCourses, setSelectedCourses] = useState([]);
@@ -88,31 +90,37 @@ export default function App() {
 
   return (
     <>
-      <Header
-        themeSetting={themeSetting}
-        resolvedTheme={resolvedTheme}
-        onCycleTheme={cycleTheme}
-      />
+      {showHome ? (
+        <Home onNavigateToPlanner={() => setShowHome(false)} />
+      ) : (
+        <>
+          <Header
+            themeSetting={themeSetting}
+            resolvedTheme={resolvedTheme}
+            onCycleTheme={cycleTheme}
+          />
 
-      <ActionBar
-        selectedSlots={allSelectedSlots}
-        onAdd={addCourse}
-      />
+          <ActionBar
+            selectedSlots={allSelectedSlots}
+            onAdd={addCourse}
+          />
 
-      <Timetable
-        selectedSlots={allSelectedSlots}
-        onToggleSlots={toggleManualSlots}
-        onReset={resetAll}
-        quickSelectEnabled={quickSelectEnabled}
-        onToggleQuickSelect={toggleQuickSelect}
-      />
+          <Timetable
+            selectedSlots={allSelectedSlots}
+            onToggleSlots={toggleManualSlots}
+            onReset={resetAll}
+            quickSelectEnabled={quickSelectEnabled}
+            onToggleQuickSelect={toggleQuickSelect}
+          />
 
-      <SelectedCourses
-        courses={selectedCourses}
-        onRemove={removeCourse}
-      />
+          <SelectedCourses
+            courses={selectedCourses}
+            onRemove={removeCourse}
+          />
 
-      <Footer />
+          <Footer />
+        </>
+      )}
     </>
   );
 }
