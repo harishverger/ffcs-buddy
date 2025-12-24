@@ -63,8 +63,15 @@ body {
 }
 
 @media (max-width: 640px) {
-  .header-brand h1 { font-size: 22px; }
-  .header-brand p { font-size: 11.5px; }
+  .header-brand { align-items: center; }
+  .header-brand h1 { 
+    font-size: 22px; 
+    white-space: nowrap;
+  }
+  .header-brand p { 
+    font-size: 11.5px; 
+    white-space: nowrap;
+  }
 }
 
 .header-actions {
@@ -749,32 +756,50 @@ body {
   .ffcs-card,
   .action-bar,
   .selected-courses {
-    margin: 12px auto;
+    margin: 12px;
     padding: 12px;
-    overflow-x: auto;
   }
 
   .ffcs-row {
-    min-width: 520px;
+    min-width: unset;
   }
 
   .ffcs-title { font-size: 16px; }
   .ffcs-field label { font-size: 12px; }
   .ffcs-field select { font-size: 13px; }
+  .ffcs-field input[type="text"] { font-size: 13px; }
 
   .timetable-wrapper {
-    padding: 0 6px;
+    padding: 0;
     margin: 12px auto 18px;
-    overflow-x: auto;
-  }
-
-  .timetable {
-    min-width: 760px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 400px);
+    min-height: 400px;
   }
 
   .timetable-actions {
     flex-direction: column;
     align-items: stretch;
+    padding: 0 6px;
+    margin-bottom: 10px;
+    position: sticky;
+    top: 0;
+    background: var(--accent-50);
+    z-index: 10;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .timetable-container {
+    overflow-x: auto;
+    overflow-y: auto;
+    flex: 1;
+    padding: 0 6px;
+  }
+
+  .timetable {
+    min-width: 760px;
   }
 
   .download-btn,
@@ -858,6 +883,12 @@ body {
   box-shadow: 0 0 0 3px rgba(249,115,22,0.25);
 }
 
+[data-theme="dark"] .ffcs-field input[type="text"] {
+  background: #0f172a;
+  border-color: #334155;
+  color: #e5e7eb;
+}
+
 /* Dark mode: input focus with orange glow */
 [data-theme="dark"] .ffcs-field input[type="text"]:focus {
   border-color: var(--accent-600);
@@ -903,6 +934,10 @@ body {
 [data-theme="dark"] .overflow-btn { color: var(--accent-300); }
 [data-theme="dark"] .overflow-btn:hover { color: var(--accent-200); }
 [data-theme="dark"] .share-btn { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); }
+
+[data-theme="dark"] .timetable-actions {
+  background: #0b1220;
+}
 
 [data-theme="dark"] .timetable th,
 [data-theme="dark"] .timetable td { border-color: #1f2937; }

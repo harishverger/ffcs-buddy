@@ -165,32 +165,33 @@ export default function Timetable({
         </button>
       </div>
 
-      <table ref={tableRef} className="timetable">
-        <thead>
-          {/* ===== THEORY HEADER ===== */}
-          <tr>
-            <th rowSpan={2}>THEORY</th>
-            <th>Start</th>
-            {THEORY_START.map((t, i) => <th key={i}>{t}</th>)}
-          </tr>
-          <tr>
-            <th>End</th>
-            {THEORY_END.map((t, i) => <th key={i}>{t}</th>)}
-          </tr>
+      <div className="timetable-container">
+        <table ref={tableRef} className="timetable">
+          <thead>
+            {/* ===== THEORY HEADER ===== */}
+            <tr>
+              <th rowSpan={2}>THEORY</th>
+              <th>Start</th>
+              {THEORY_START.map((t, i) => <th key={i}>{t}</th>)}
+            </tr>
+            <tr>
+              <th>End</th>
+              {THEORY_END.map((t, i) => <th key={i}>{t}</th>)}
+            </tr>
 
-          {/* ===== LAB HEADER ===== */}
-          <tr>
-            <th rowSpan={2}>LAB</th>
-            <th>Start</th>
-            {LAB_START.map((t, i) => <th key={i}>{t}</th>)}
-          </tr>
-          <tr>
-            <th>End</th>
-            {LAB_END.map((t, i) => <th key={i}>{t}</th>)}
-          </tr>
-        </thead>
+            {/* ===== LAB HEADER ===== */}
+            <tr>
+              <th rowSpan={2}>LAB</th>
+              <th>Start</th>
+              {LAB_START.map((t, i) => <th key={i}>{t}</th>)}
+            </tr>
+            <tr>
+              <th>End</th>
+              {LAB_END.map((t, i) => <th key={i}>{t}</th>)}
+            </tr>
+          </thead>
 
-        <tbody>
+          <tbody>
           {Object.entries(TIMETABLE).map(([day, rows]) => (
             <React.Fragment key={day}>
               {/* ===== THEORY ROW ===== */}
@@ -267,6 +268,7 @@ export default function Timetable({
           ))}
         </tbody>
       </table>
+      </div>
 
       <ClashAlert 
         message={clashMessage} 
