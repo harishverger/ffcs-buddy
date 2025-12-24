@@ -1,40 +1,34 @@
-import React, { useEffect, useState } from "react";
-
-export default function Home({ onNavigateToPlanner, onNavigateHome }) {
-  const fullText = "Welcome to FFCS Buddy";
-  const [typed, setTyped] = useState("");
-  );
-}
-            <a href="https://github.com/harishverger/ffcs-buddy" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
-            <span>•</span>
-            <a href="#" onClick={(e) => { e.preventDefault(); onNavigateToPlanner(); }}>
-              Timetable Planner
-            </a>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-}import React from "react";
+import React from "react";
 
 export default function Home({ onNavigateToPlanner }) {
   return (
     <div className="home-container">
       {/* Hero Section */}
       <section className="hero-section">
-        <div className="hero-content">
-          <h1 className="hero-title">
-            Welcome to <span className="brand-gradient">FFCS Buddy</span>
-          </h1>
-          <p className="hero-subtitle">
-            Your one-stop solution for VIT-AP FFCS timetable planning
-          </p>
-          <button className="cta-button" onClick={onNavigateToPlanner}>
-            <span className="btn-icon">📅</span>
-            Start Planning Your Timetable
-          </button>
+        <div className="hero-doodles" aria-hidden="true"></div>
+        <div className="hero-grid">
+          {/* Left: Headline and CTA */}
+          <div className="hero-left">
+            <h1 className="hero-title">
+              <span className="typed-text">Welcome to FFCS Buddy</span>
+            </h1>
+            <p className="hero-subtitle">
+              Your one-stop solution for VIT-AP FFCS timetable planning
+            </p>
+            <p className="hero-blurb">
+              Plan smarter and faster with clash detection, quick select, and a clean visual timetable. Export your plan and share it in one click.
+            </p>
+            <button className="cta-button cta-outline" onClick={onNavigateToPlanner}>
+              <span className="btn-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12h12M13 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+              Build Your Timetable
+            </button>
+          </div>
+
+          {/* Right column removed per request (no login needed) */}
         </div>
       </section>
 
@@ -128,7 +122,7 @@ export default function Home({ onNavigateToPlanner }) {
       {/* Footer */}
       <footer className="home-footer">
         <div className="footer-content">
-          <p>© 2024 FFCS Buddy. Made with ❤️ for VIT-AP students</p>
+          <p>© 2026 FFCS Buddy. Made with ❤️ for VIT-AP students</p>
           <div className="footer-links">
             <a href="https://github.com/harishverger/ffcs-buddy" target="_blank" rel="noopener noreferrer">
               GitHub

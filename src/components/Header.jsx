@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function Header({ themeSetting, resolvedTheme, onCycleTheme }) {
+export default function Header({ themeSetting, resolvedTheme, onCycleTheme, onNavigateHome }) {
   const [showMenu, setShowMenu] = useState(false);
   const [showShareDesktop, setShowShareDesktop] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -53,6 +53,19 @@ export default function Header({ themeSetting, resolvedTheme, onCycleTheme }) {
 
       <div className="header-actions">
         <div className="desktop-actions">
+          <button
+            className="home-btn-desktop"
+            onClick={() => onNavigateHome && onNavigateHome()}
+            aria-label="Go to Home"
+          >
+            <span aria-hidden="true" className="home-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 11l9-7 9 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M5 10v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <span>Home</span>
+          </button>
           <div className="share-wrap-desktop">
             <button
               className="share-btn-desktop"
@@ -97,6 +110,8 @@ export default function Header({ themeSetting, resolvedTheme, onCycleTheme }) {
 
             {showMenu && (
               <div className="overflow-menu" role="menu">
+                <div className="menu-heading">Navigation</div>
+                <button onClick={() => { onNavigateHome && onNavigateHome(); setShowMenu(false); }} role="menuitem">Home</button>
                 <div className="menu-heading">Share</div>
                 <button onClick={() => handleShare("twitter")} role="menuitem">Twitter / X</button>
                 <button onClick={() => handleShare("whatsapp")} role="menuitem">WhatsApp</button>

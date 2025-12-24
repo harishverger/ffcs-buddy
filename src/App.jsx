@@ -98,6 +98,7 @@ export default function App() {
             themeSetting={themeSetting}
             resolvedTheme={resolvedTheme}
             onCycleTheme={cycleTheme}
+            onNavigateHome={() => setShowHome(true)}
           />
 
           <ActionBar
