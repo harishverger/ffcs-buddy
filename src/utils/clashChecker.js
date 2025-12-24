@@ -7,19 +7,32 @@ import { TIMETABLE } from "../data/timetableData";
  */
 function findSlotPositions(slotToken) {
   const positions = [];
+  const upperSlot = slotToken.toUpperCase();
   
   for (const [day, rows] of Object.entries(TIMETABLE)) {
     // Check THEORY row
     rows.THEORY.forEach((cell, index) => {
-      if (cell && cell.toUpperCase().includes(slotToken)) {
-        positions.push({ day, position: index, type: 'THEORY' });
+      if (cell) {
+        // Extract exact tokens from the cell
+        const cellText = String(cell).toUpperCase();
+        const tokens = cellText.match(/[A-Z]{1,3}\d{1,2}/g) || [];
+        
+        if (tokens.includes(upperSlot)) {
+          positions.push({ day, position: index, type: 'THEORY' });
+        }
       }
     });
     
     // Check LAB row
     rows.LAB.forEach((cell, index) => {
-      if (cell && cell.toUpperCase().includes(slotToken)) {
-        positions.push({ day, position: index, type: 'LAB' });
+      if (cell) {
+        // Extract exact tokens from the cell
+        const cellText = String(cell).toUpperCase();
+        const tokens = cellText.match(/[A-Z]{1,3}\d{1,2}/g) || [];
+        
+        if (tokens.includes(upperSlot)) {
+          positions.push({ day, position: index, type: 'LAB' });
+        }
       }
     });
   }

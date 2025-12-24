@@ -103,6 +103,7 @@ export const CREDIT_RULES = {
       "L8+L9",
       "L10+L11",
       "L14+L15",
+      "L16+L17",
       "L20+L21",
       "L22+L23",
       "L26+L27",

@@ -5,7 +5,7 @@ import { hasClash } from "../utils/clashChecker";
 import ClashAlert from "./ClashAlert";
 
 export default function ActionBar({ selectedSlots, onAdd }) {
-  const [credit, setCredit] = useState("");
+  const [creditFilter, setCreditFilter] = useState("");
   const [subjectCode, setSubjectCode] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -14,14 +14,22 @@ export default function ActionBar({ selectedSlots, onAdd }) {
   const [clashMessage, setClashMessage] = useState("");
 
   const subject = subjects.find(s => s.code === subjectCode);
-  const creditRule = credit ? CREDIT_RULES[credit] : null;
+  
+  // Automatically determine credit rule from selected subject
+  const creditRule = subject ? CREDIT_RULES[subject.credits] : null;
 
-  // Filter subjects based on search query
+  // Determine if subject has theory and/or lab
+  const hasTheory = subject && (subject.component === "TH" || subject.component === "TH+LAB");
+  const hasLab = subject && (subject.component === "LAB" || subject.component === "TH+LAB");
+
+  // Filter subjects based on search query and credit filter
   const filteredSubjects = searchQuery.trim()
-    ? subjects.filter(s =>
-        s.code.toUpperCase().includes(searchQuery.toUpperCase()) ||
-        s.name.toUpperCase().includes(searchQuery.toUpperCase())
-      )
+    ? subjects.filter(s => {
+        const matchesSearch = s.code.toUpperCase().includes(searchQuery.toUpperCase()) ||
+                             s.title.toUpperCase().includes(searchQuery.toUpperCase());
+        const matchesCredit = !creditFilter || s.credits.toString() === creditFilter;
+        return matchesSearch && matchesCredit;
+      })
     : [];
 
   // Normalize slot options: ["A1","TA1"] → "A1+TA1"
@@ -37,12 +45,12 @@ export default function ActionBar({ selectedSlots, onAdd }) {
       return;
     }
 
-    if (subject.hasTheory && !theorySlot) {
+    if (hasTheory && !theorySlot) {
       setClashMessage("Theory slot is required for this course.");
       return;
     }
 
-    if (subject.hasLab && !labSlot) {
+    if (hasLab && !labSlot) {
       setClashMessage("Lab slot is required for this course.");
       return;
     }
@@ -76,8 +84,8 @@ export default function ActionBar({ selectedSlots, onAdd }) {
     onAdd(
       {
         code: subject.code,
-        name: subject.name,
-        credit
+        name: subject.title,
+        credit: subject.credits
       },
       slotsToAdd
     );
@@ -117,9 +125,11 @@ export default function ActionBar({ selectedSlots, onAdd }) {
                     setSubjectCode(s.code);
                     setSearchQuery("");
                     setShowSuggestions(false);
+                    setTheorySlot("");
+                    setLabSlot("");
                   }}
                 >
-                  <strong>{s.code}</strong> – {s.name}
+                  <strong>{s.code}</strong> – {s.title} ({s.credits} credits)
                 </div>
               ))}
             </div>
@@ -128,12 +138,14 @@ export default function ActionBar({ selectedSlots, onAdd }) {
           {subjectCode && (
             <div className="selected-course-tag">
               <span>
-                <strong>{subjectCode}</strong> – {subject?.name}
+                <strong>{subjectCode}</strong> – {subject?.title} ({subject?.credits} credits)
               </span>
               <button
                 onClick={() => {
                   setSubjectCode("");
                   setSearchQuery("");
+                  setTheorySlot("");
+                  setLabSlot("");
                 }}
               >
                 ✕
@@ -143,11 +155,11 @@ export default function ActionBar({ selectedSlots, onAdd }) {
         </div>
 
         <div className="ffcs-field">
-          <label>Credit</label>
-          <select value={credit} onChange={e => setCredit(e.target.value)}>
-            <option value="">Select</option>
+          <label>Filter by Credits</label>
+          <select value={creditFilter} onChange={e => setCreditFilter(e.target.value)}>
+            <option value="">All Credits</option>
             {Object.keys(CREDIT_RULES).map(c => (
-              <option key={c} value={c}>{c}</option>
+              <option key={c} value={c}>{c} Credit{c !== "1" ? "s" : ""}</option>
             ))}
           </select>
         </div>
@@ -155,7 +167,7 @@ export default function ActionBar({ selectedSlots, onAdd }) {
 
       {/* ===== ROW 2 ===== */}
       <div className="ffcs-row">
-        {subject?.hasTheory && (
+        {hasTheory && (
           <div className="ffcs-field">
             <label>Theory Slot</label>
             <select
@@ -170,7 +182,7 @@ export default function ActionBar({ selectedSlots, onAdd }) {
           </div>
         )}
 
-        {subject?.hasLab && (
+        {hasLab && (
           <div className="ffcs-field">
             <label>Lab Slot</label>
             <select

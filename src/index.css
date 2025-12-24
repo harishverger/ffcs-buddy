@@ -911,10 +911,25 @@ body {
 }
 [data-theme="dark"] option { color: #e5e7eb; background: #0f172a; }
 
-[data-theme="dark"] .selected-courses th { background: #0f172a; }
-[data-theme="dark"] .selected-courses td { color: #e5e7eb; }
-[data-theme="dark"] .selected-courses tr:hover { background: #111827; }
-[data-theme="dark"] .total-credits { background: #0f172a; }
+[data-theme="dark"] .selected-courses th { 
+  background: #1e293b;
+  color: var(--accent-300);
+}
+[data-theme="dark"] .selected-courses td { 
+  color: #e5e7eb;
+  background: #0f172a;
+}
+[data-theme="dark"] .selected-courses tr:hover { 
+  background: #1e293b; 
+}
+[data-theme="dark"] .selected-courses tr:hover td {
+  background: #1e293b;
+}
+[data-theme="dark"] .total-credits { 
+  background: #1e293b;
+  color: var(--accent-300);
+  border-top: 1px solid var(--accent-600);
+}
 [data-theme="dark"] .overflow-menu,
 [data-theme="dark"] .share-menu { background: #0b1220; color: #e5e7eb; border-color: #1f2937; box-shadow: 0 10px 26px rgba(0,0,0,0.4); }
 [data-theme="dark"] .overflow-menu button,
