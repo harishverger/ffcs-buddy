@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { toPng } from "html-to-image";
 import { TIMETABLE } from "../data/timetableData";
 import { hasClash } from "../utils/clashChecker";
+import ClashAlert from "./ClashAlert";
 
 /* ===== OFFICIAL FFCS TIMINGS ===== */
 
@@ -49,6 +50,7 @@ export default function Timetable({
   onToggleQuickSelect = () => {}
 }) {
   const tableRef = useRef(null);
+  const [clashMessage, setClashMessage] = useState("");
 
   const handleDownload = async () => {
     if (!tableRef.current) return;
@@ -134,7 +136,7 @@ export default function Timetable({
     // If selecting new slots, check for clashes
     for (const token of tokens) {
       if (hasClash(selectedSlots, token)) {
-        alert(`⚠️ Clash Detected!\n\nSlot "${token}" clashes with an already selected slot on the same day and time.\n\nPlease deselect the conflicting slot first.`);
+        setClashMessage(`Slot "${token}" clashes with an already selected slot on the same day and time.\n\nPlease deselect the conflicting slot first.`);
         return;
       }
     }
@@ -265,6 +267,11 @@ export default function Timetable({
           ))}
         </tbody>
       </table>
+
+      <ClashAlert 
+        message={clashMessage} 
+        onClose={() => setClashMessage("")} 
+      />
     </div>
   );
 }

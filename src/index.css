@@ -255,6 +255,117 @@ body {
 }
 
 /* =========================================================
+   CLASH ALERT MODAL
+========================================================= */
+.clash-alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.clash-alert-box {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: relative;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.clash-alert-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+.clash-alert-title {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.clash-alert-message {
+  margin: 0 0 24px;
+  font-size: 15px;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.clash-alert-close {
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.clash-alert-close:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 20px rgba(239, 68, 68, 0.4);
+}
+
+.clash-alert-close:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 12px rgba(239, 68, 68, 0.35);
+}
+
+/* Dark mode clash alert */
+[data-theme="dark"] .clash-alert-box {
+  background: #1f2937;
+  border: 1px solid #374151;
+}
+
+[data-theme="dark"] .clash-alert-title {
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] .clash-alert-message {
+  color: #d1d5db;
+}
+
+/* =========================================================
    COURSE SEARCH CARD
 ========================================================= */
 .ffcs-card {

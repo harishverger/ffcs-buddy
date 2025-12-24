@@ -2,42 +2,68 @@ import { SLOT_TIME_MAP } from "../data/slotTimeMap";
 import { TIMETABLE } from "../data/timetableData";
 
 /**
- * Find which day(s) a slot appears in the timetable
+ * Find which day(s) and position(s) a slot appears in the timetable
+ * Returns array of {day, position, type} objects
  */
-function findSlotDays(slotToken) {
-  const days = [];
+function findSlotPositions(slotToken) {
+  const positions = [];
+  
   for (const [day, rows] of Object.entries(TIMETABLE)) {
-    const allCells = [...rows.THEORY, ...rows.LAB];
-    if (allCells.some(cell => cell.includes(slotToken))) {
-      days.push(day);
-    }
+    // Check THEORY row
+    rows.THEORY.forEach((cell, index) => {
+      if (cell && cell.toUpperCase().includes(slotToken)) {
+        positions.push({ day, position: index, type: 'THEORY' });
+      }
+    });
+    
+    // Check LAB row
+    rows.LAB.forEach((cell, index) => {
+      if (cell && cell.toUpperCase().includes(slotToken)) {
+        positions.push({ day, position: index, type: 'LAB' });
+      }
+    });
   }
-  return days;
+  
+  return positions;
 }
 
 /**
  * Check if two slot tokens clash
- * Clash only if:
- *  - appear on the same day
- *  - overlapping time range
+ * Clash if they appear on the same day at the same position (column)
  */
 export function doSlotsClash(slot1, slot2) {
-  // Get days for both slots
-  const days1 = findSlotDays(slot1);
-  const days2 = findSlotDays(slot2);
+  if (slot1 === slot2) return false; // Same slot
   
-  // Check if they share any common day
-  const commonDays = days1.filter(day => days2.includes(day));
-  if (commonDays.length === 0) return false;
-
-  // Check time overlap
+  const positions1 = findSlotPositions(slot1);
+  const positions2 = findSlotPositions(slot2);
+  
+  // Check if any positions overlap (same day and same column index)
+  for (const pos1 of positions1) {
+    for (const pos2 of positions2) {
+      // If same day and same position (time column), they clash
+      if (pos1.day === pos2.day && pos1.position === pos2.position) {
+        return true;
+      }
+    }
+  }
+  
+  // Fallback to time-based check if slots are in SLOT_TIME_MAP
   const time1 = SLOT_TIME_MAP[slot1];
   const time2 = SLOT_TIME_MAP[slot2];
-
-  if (!time1 || !time2) return false;
-
-  // Time ranges overlap if start1 < end2 AND start2 < end1
-  return time1.start < time2.end && time2.start < time1.end;
+  
+  if (time1 && time2) {
+    // Check if they share any common day
+    const days1 = positions1.map(p => p.day);
+    const days2 = positions2.map(p => p.day);
+    const commonDays = days1.filter(day => days2.includes(day));
+    
+    if (commonDays.length > 0) {
+      // Time ranges overlap if start1 < end2 AND start2 < end1
+      return time1.start < time2.end && time2.start < time1.end;
+    }
+  }
+  
+  return false;
 }
 
 /**

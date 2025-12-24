@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { subjects } from "../data/subjects";
 import { CREDIT_RULES } from "../data/creditRules";
 import { hasClash } from "../utils/clashChecker";
+import ClashAlert from "./ClashAlert";
 
 export default function ActionBar({ selectedSlots, onAdd }) {
   const [credit, setCredit] = useState("");
@@ -10,6 +11,7 @@ export default function ActionBar({ selectedSlots, onAdd }) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [theorySlot, setTheorySlot] = useState("");
   const [labSlot, setLabSlot] = useState("");
+  const [clashMessage, setClashMessage] = useState("");
 
   const subject = subjects.find(s => s.code === subjectCode);
   const creditRule = credit ? CREDIT_RULES[credit] : null;
@@ -30,13 +32,20 @@ export default function ActionBar({ selectedSlots, onAdd }) {
   const labSlots = normalizeSlots(creditRule?.lab);
 
   const handleAdd = () => {
-    if (!subject) return alert("Select subject");
+    if (!subject) {
+      setClashMessage("Please select a subject.");
+      return;
+    }
 
-    if (subject.hasTheory && !theorySlot)
-      return alert("Theory slot required");
+    if (subject.hasTheory && !theorySlot) {
+      setClashMessage("Theory slot is required for this course.");
+      return;
+    }
 
-    if (subject.hasLab && !labSlot)
-      return alert("Lab slot required");
+    if (subject.hasLab && !labSlot) {
+      setClashMessage("Lab slot is required for this course.");
+      return;
+    }
 
     const slotsToAdd = [];
     let hasClashError = false;
@@ -47,7 +56,7 @@ export default function ActionBar({ selectedSlots, onAdd }) {
         if (!token) return;
 
         if (hasClash(selectedSlots, token)) {
-          alert(`⚠️ Clash Detected!\n\nThe ${label} slot "${token}" clashes with an already selected slot on the same day and time.\n\nPlease choose a different slot.`);
+          setClashMessage(`The ${label} slot "${token}" clashes with an already selected slot on the same day and time.\n\nPlease choose a different slot.`);
           hasClashError = true;
           return;
         }
@@ -180,6 +189,11 @@ export default function ActionBar({ selectedSlots, onAdd }) {
           <button onClick={handleAdd}>Add Course</button>
         </div>
       </div>
+
+      <ClashAlert 
+        message={clashMessage} 
+        onClose={() => setClashMessage("")} 
+      />
     </div>
   );
 }
