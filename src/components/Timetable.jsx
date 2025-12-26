@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { toPng } from "html-to-image";
 import { TIMETABLE } from "../data/timetableData";
-import { hasClash } from "../utils/clashChecker";
+import { hasClash } from "../utils/clashchecker";
 import ClashAlert from "./ClashAlert";
 
 /* ===== OFFICIAL FFCS TIMINGS ===== */
@@ -124,7 +124,10 @@ export default function Timetable({
 
     // Check if any token in the clicked cell is already selected
     const hasSelectedToken = tokens.some(token =>
-      selectedSlots.includes(token)
+      selectedSlots.some(s => {
+        const selected = typeof s === "string" ? s.toUpperCase() : s?.slot?.toUpperCase();
+        return selected === token.toUpperCase();
+      })
     );
 
     // If deselecting (any token is already selected), allow it
@@ -144,6 +147,41 @@ export default function Timetable({
     // No clashes, proceed with selection
     onToggleSlots(tokens);
   };
+
+  const normalizeSlot = s => (typeof s === "string" ? s : s?.slot)?.toUpperCase();
+  const normalizedSelected = selectedSlots
+    .map(normalizeSlot)
+    .filter(Boolean);
+
+  const classifyTokens = tokens => {
+    const unique = Array.from(new Set(tokens));
+    const selected = [];
+    const free = [];
+    const blocked = [];
+
+    unique.forEach(tok => {
+      if (normalizedSelected.includes(tok)) {
+        selected.push(tok);
+      } else if (hasClash(normalizedSelected, tok)) {
+        blocked.push(tok);
+      } else {
+        free.push(tok);
+      }
+    });
+
+    return { free, blocked, selected };
+  };
+
+  const availability = Object.entries(TIMETABLE).map(([day, rows]) => {
+    const theoryTokens = rows.THEORY.flatMap(extractTokens).filter(Boolean);
+    const labTokens = rows.LAB.flatMap(extractTokens).filter(Boolean);
+
+    return {
+      day,
+      theory: classifyTokens(theoryTokens),
+      lab: classifyTokens(labTokens)
+    };
+  });
 
   return (
     <div className="timetable-wrapper">
@@ -268,6 +306,80 @@ export default function Timetable({
           ))}
         </tbody>
       </table>
+      </div>
+
+      <div className="availability-panel">
+        <div className="availability-header">
+          <h4>Slot Availability</h4>
+          <div className="availability-legend">
+            <span className="chip free">Free</span>
+            <span className="chip clash">Clashes</span>
+            <span className="chip selected">Selected</span>
+          </div>
+        </div>
+        <div className="availability-grid availability-inline">
+          {availability.map(({ day, theory, lab }) => (
+            <div className="availability-card" key={day}>
+              <div className="availability-day">{day}</div>
+
+              <div className="availability-section">
+                <div className="availability-section-title">Theory</div>
+                <div className="availability-row">
+                  <span className="availability-label">Free</span>
+                  <div className="availability-chips">
+                    {theory.free.length ? theory.free.map(tok => (
+                      <span className="chip free" key={`t-free-${tok}`}>{tok}</span>
+                    )) : <span className="muted">None</span>}
+                  </div>
+                </div>
+                <div className="availability-row">
+                  <span className="availability-label">Clashing</span>
+                  <div className="availability-chips">
+                    {theory.blocked.length ? theory.blocked.map(tok => (
+                      <span className="chip clash" key={`t-clash-${tok}`}>{tok}</span>
+                    )) : <span className="muted">None</span>}
+                  </div>
+                </div>
+                <div className="availability-row">
+                  <span className="availability-label">Selected</span>
+                  <div className="availability-chips">
+                    {theory.selected.length ? theory.selected.map(tok => (
+                      <span className="chip selected" key={`t-sel-${tok}`}>{tok}</span>
+                    )) : <span className="muted">None</span>}
+                  </div>
+                </div>
+              </div>
+
+              <div className="availability-section">
+                <div className="availability-section-title">Lab</div>
+                <div className="availability-row">
+                  <span className="availability-label">Free</span>
+                  <div className="availability-chips">
+                    {lab.free.length ? lab.free.map(tok => (
+                      <span className="chip free" key={`l-free-${tok}`}>{tok}</span>
+                    )) : <span className="muted">None</span>}
+                  </div>
+                </div>
+                <div className="availability-row">
+                  <span className="availability-label">Clashing</span>
+                  <div className="availability-chips">
+                    {lab.blocked.length ? lab.blocked.map(tok => (
+                      <span className="chip clash" key={`l-clash-${tok}`}>{tok}</span>
+                    )) : <span className="muted">None</span>}
+                  </div>
+                </div>
+                <div className="availability-row">
+                  <span className="availability-label">Selected</span>
+                  <div className="availability-chips">
+                    {lab.selected.length ? lab.selected.map(tok => (
+                      <span className="chip selected" key={`l-sel-${tok}`}>{tok}</span>
+                    )) : <span className="muted">None</span>}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <ClashAlert 

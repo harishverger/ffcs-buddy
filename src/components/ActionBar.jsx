@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { subjects } from "../data/subjects";
 import { CREDIT_RULES } from "../data/creditRules";
-import { hasClash } from "../utils/clashChecker";
+import { hasClash } from "../utils/clashchecker";
 import ClashAlert from "./ClashAlert";
 
 export default function ActionBar({ selectedSlots, onAdd }) {
@@ -16,7 +16,9 @@ export default function ActionBar({ selectedSlots, onAdd }) {
   const subject = subjects.find(s => s.code === subjectCode);
   
   // Automatically determine credit rule from selected subject
-  const creditRule = subject ? CREDIT_RULES[subject.credits] : null;
+  const creditRule = subject
+    ? CREDIT_RULES?.[subject.credits]?.[subject.component] || null
+    : null;
 
   // Determine if subject has theory and/or lab
   const hasTheory = subject && (subject.component === "TH" || subject.component === "TH+LAB");
@@ -39,6 +41,26 @@ export default function ActionBar({ selectedSlots, onAdd }) {
   const theorySlots = normalizeSlots(creditRule?.theory);
   const labSlots = normalizeSlots(creditRule?.lab);
 
+  const normalizeToken = slot => String(slot || "").trim().toUpperCase();
+
+  const findSuggestions = (currentValue, label, pendingTokens = []) => {
+    const sourceOptions = label === "Theory" ? creditRule?.theory : creditRule?.lab;
+    if (!sourceOptions || sourceOptions.length === 0) return [];
+
+    const normalizedSelected = selectedSlots.map(normalizeToken);
+    const normalizedPending = pendingTokens.map(normalizeToken);
+
+    return sourceOptions
+      .map(opt => normalizeToken(opt))
+      .filter(opt => opt !== normalizeToken(currentValue))
+      .filter(opt => {
+        const tokens = opt.split("+").map(normalizeToken).filter(Boolean);
+        // Do not suggest anything that clashes any selected or already pending token
+        return tokens.every(tok => !hasClash([...normalizedSelected, ...normalizedPending], tok));
+      })
+      .slice(0, 5);
+  };
+
   const handleAdd = () => {
     if (!subject) {
       setClashMessage("Please select a subject.");
@@ -60,11 +82,15 @@ export default function ActionBar({ selectedSlots, onAdd }) {
 
     const addSlotTokens = (slotValue, label) => {
       slotValue.split("+").forEach(raw => {
-        const token = raw.trim().toUpperCase();
+        const token = normalizeToken(raw);
         if (!token) return;
 
         if (hasClash(selectedSlots, token)) {
-          setClashMessage(`The ${label} slot "${token}" clashes with an already selected slot on the same day and time.\n\nPlease choose a different slot.`);
+          const suggestions = findSuggestions(slotValue, label, slotsToAdd);
+          const suggestionText = suggestions.length
+            ? `\n\nTry: ${suggestions.join(", ")}`
+            : "";
+          setClashMessage(`The ${label} slot "${token}" clashes with an already selected slot on the same day and time.${suggestionText}`);
           hasClashError = true;
           return;
         }

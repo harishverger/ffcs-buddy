@@ -1,5 +1,5 @@
 import { SLOT_TIME_MAP } from "../data/slotTimeMap";
-import { TIMETABLE } from "../data/timetableData";
+import { TIMETABLE, TIME_COLUMNS } from "../data/timetableData";
 
 /**
  * Find which day(s) and position(s) a slot appears in the timetable
@@ -40,39 +40,59 @@ function findSlotPositions(slotToken) {
   return positions;
 }
 
+// Convert timetable column index into a start/end minute range using TIME_COLUMNS
+function positionToRange(position) {
+  const startLabel = TIME_COLUMNS[position];
+
+  if (!startLabel || startLabel === "LUNCH") return null;
+
+  const toMinutes = (label) => {
+    const [h, m] = label.split(":").map(Number);
+    return h * 60 + m;
+  };
+
+  const start = toMinutes(startLabel);
+  const end = start + 50; // treat every column as a 50-minute block to preserve column-based separation
+
+  return { start, end };
+}
+
 /**
  * Check if two slot tokens clash
  * Clash if they appear on the same day at the same position (column)
  */
 export function doSlotsClash(slot1, slot2) {
-  if (slot1 === slot2) return false; // Same slot
+  const normalized1 = String(slot1).toUpperCase();
+  const normalized2 = String(slot2).toUpperCase();
+
+  // Same slot should always be treated as a clash to prevent duplicates
+  if (normalized1 === normalized2) return true;
   
-  const positions1 = findSlotPositions(slot1);
-  const positions2 = findSlotPositions(slot2);
-  
-  // Check if any positions overlap (same day and same column index)
+  const positions1 = findSlotPositions(normalized1);
+  const positions2 = findSlotPositions(normalized2);
+
+  // No positions found = slot doesn't exist in timetable, can't clash
+  if (positions1.length === 0 || positions2.length === 0) {
+    return false;
+  }
+
+  // Check if slots clash on same day
   for (const pos1 of positions1) {
     for (const pos2 of positions2) {
-      // If same day and same position (time column), they clash
-      if (pos1.day === pos2.day && pos1.position === pos2.position) {
-        return true;
+      if (pos1.day === pos2.day) {
+        // Same position (column) = always clash
+        if (pos1.position === pos2.position) {
+          return true;
+        }
+
+        const range1 = positionToRange(pos1.position);
+        const range2 = positionToRange(pos2.position);
+
+        // Different positions but same day: clash if time ranges overlap on that day
+        if (range1 && range2 && range1.start < range2.end && range2.start < range1.end) {
+          return true;
+        }
       }
-    }
-  }
-  
-  // Fallback to time-based check if slots are in SLOT_TIME_MAP
-  const time1 = SLOT_TIME_MAP[slot1];
-  const time2 = SLOT_TIME_MAP[slot2];
-  
-  if (time1 && time2) {
-    // Check if they share any common day
-    const days1 = positions1.map(p => p.day);
-    const days2 = positions2.map(p => p.day);
-    const commonDays = days1.filter(day => days2.includes(day));
-    
-    if (commonDays.length > 0) {
-      // Time ranges overlap if start1 < end2 AND start2 < end1
-      return time1.start < time2.end && time2.start < time1.end;
     }
   }
   

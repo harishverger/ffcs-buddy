@@ -395,6 +395,246 @@ body {
   }
 }
 
+/* =========================================================
+   SLOT AVAILABILITY PANEL
+========================================================= */
+.availability-panel {
+  margin: 18px 0 12px;
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+}
+
+.availability-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.availability-header h4 {
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: 0.2px;
+}
+
+.availability-legend {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.availability-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+/* Inline layout: all days in a single row with horizontal scroll */
+.availability-inline {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.availability-inline .availability-card {
+  min-width: 220px;
+  flex: 0 0 auto;
+}
+
+.availability-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.availability-day {
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #111827;
+}
+
+.availability-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+.availability-section-title {
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: 0.2px;
+  font-size: 13.5px;
+}
+
+.availability-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.availability-label {
+  min-width: 72px;
+  font-weight: 600;
+  color: #4b5563;
+  font-size: 13px;
+}
+
+.availability-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  border: 1px solid transparent;
+}
+
+.chip.free {
+  background: #ecfdf3;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.chip.clash {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecdd3;
+}
+
+.chip.selected {
+  background: #e0f2fe;
+  color: #075985;
+  border-color: #bae6fd;
+}
+
+.muted {
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+/* Mobile-friendly availability layout */
+@media (max-width: 768px) {
+  .availability-panel {
+    margin: 12px 0 4px;
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .availability-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .availability-legend {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .availability-inline {
+    gap: 12px;
+    padding-bottom: 6px;
+    scroll-snap-type: x mandatory;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .availability-inline .availability-card {
+    min-width: 260px;
+    scroll-snap-align: start;
+    white-space: normal;
+  }
+
+  .availability-card {
+    padding: 10px;
+  }
+
+  .availability-section {
+    gap: 4px;
+    padding: 8px;
+  }
+
+  .availability-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .availability-label {
+    min-width: 0;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  .availability-chips {
+    gap: 5px;
+  }
+
+  .chip {
+    padding: 5px 7px;
+    font-size: 11px;
+    border-radius: 7px;
+  }
+
+  /* Prevent availability + selected courses from colliding on mobile */
+  .timetable-wrapper {
+    height: auto;
+    min-height: unset;
+  }
+
+  .timetable-container {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .availability-panel {
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .selected-courses {
+    margin: 12px;
+    padding-bottom: 68px; /* space for sticky credits bar */
+    position: relative;
+    z-index: 2;
+    margin-top: 18px;
+  }
+
+  .selected-courses table {
+    min-width: 480px;
+  }
+
+  .total-credits {
+    position: sticky;
+    bottom: 0;
+    z-index: 6;
+  }
+}
+
 .clash-alert-icon {
   width: 64px;
   height: 64px;
@@ -811,9 +1051,7 @@ body {
     gap: 8px;
   }
 
-  .app-header h1 {
-    font-size: 20px;
-  }
+  .app-header h1 { font-size: 20px; }
 
   .header-actions { width: 100%; justify-content: flex-end; }
   .desktop-actions { display: none; }
@@ -838,10 +1076,7 @@ body {
     width: 220px;
   }
 
-
-@media (min-width: 721px) {
-  .overflow-wrap { display: none; }
-}
+  /* Mobile layout tweaks */
   .ffcs-card,
   .action-bar,
   .selected-courses {
@@ -849,9 +1084,7 @@ body {
     padding: 12px;
   }
 
-  .ffcs-row {
-    min-width: unset;
-  }
+  .ffcs-row { min-width: unset; }
 
   .ffcs-title { font-size: 16px; }
   .ffcs-field label { font-size: 12px; }
@@ -887,9 +1120,7 @@ body {
     padding: 0 6px;
   }
 
-  .timetable {
-    min-width: 760px;
-  }
+  .timetable { min-width: 760px; }
 
   .download-btn,
   .reset-btn,
@@ -905,9 +1136,7 @@ body {
     font-size: 12px;
   }
 
-  .selected-courses table {
-    min-width: 520px;
-  }
+  .selected-courses table { min-width: 520px; }
 
   .selected-courses th,
   .selected-courses td,
@@ -915,12 +1144,95 @@ body {
     font-size: 12px;
   }
 
+  .selected-courses { overflow-x: auto; }
+
+  .selected-courses-table {
+    max-height: 320px;
+    overflow-y: auto;
+    margin-bottom: 12px;
+  }
+
   .selected-courses {
+    padding-bottom: 140px; /* space for fixed credits bar */
+  }
+
+  .total-credits {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding-left: calc(16px + env(safe-area-inset-left));
+    padding-right: calc(16px + env(safe-area-inset-right));
+    z-index: 20;
+    box-shadow: 0 -10px 26px rgba(0,0,0,0.12);
+  }
+
+  [data-theme="dark"] .total-credits {
+    box-shadow: 0 -10px 24px rgba(0,0,0,0.45);
+  }
+}
+
+@media (min-width: 721px) {
+  .overflow-wrap { display: none; }
+}
+
+  @media (min-width: 721px) {
+    .overflow-wrap { display: none; }
+  }
+
+/* Tablet & large-mobile fixes: prevent availability/selected overlap and allow full scroll */
+@media (max-width: 1024px) {
+  .timetable-wrapper {
+    display: block;
+    height: auto;
+    min-height: unset;
+  }
+
+  .timetable-container {
+    max-height: none;
+    min-height: 320px;
+    overflow-y: auto;
     overflow-x: auto;
   }
 
-  .selected-courses table {
-    min-width: 520px;
+  .availability-panel {
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .availability-inline {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: visible;
+    gap: 12px;
+    padding: 0 4px 10px;
+    scroll-snap-type: x mandatory;
+    white-space: nowrap;
+  }
+
+  .availability-inline .availability-card {
+    flex: 0 0 auto;
+    min-width: 260px;
+    scroll-snap-align: start;
+    white-space: normal;
+  }
+
+  .selected-courses {
+    position: relative;
+    z-index: 2;
+    margin-top: 18px;
+    padding-bottom: 80px; /* space for sticky credits bar */
+  }
+
+  .total-credits {
+    position: sticky;
+    bottom: 0;
+    z-index: 6;
   }
 }
 
@@ -972,6 +1284,7 @@ body {
   box-shadow: 0 0 0 3px rgba(249,115,22,0.25);
 }
 
+[data-theme="dark"] .ffcs-field select option { color: #e5e7eb; }
 [data-theme="dark"] .ffcs-field input[type="text"] {
   background: #0f172a;
   border-color: #334155;
@@ -982,6 +1295,50 @@ body {
 [data-theme="dark"] .ffcs-field input[type="text"]:focus {
   border-color: var(--accent-600);
   box-shadow: 0 0 0 3px rgba(249,115,22,0.25);
+}
+
+[data-theme="dark"] .ffcs-field input[type="text"]::placeholder {
+  color: #94a3b8;
+}
+/* Dark mode: availability panel */
+[data-theme="dark"] .availability-panel {
+  background: #0b1220;
+  border-color: #1f2937;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.45);
+}
+
+[data-theme="dark"] .availability-card {
+  background: #0f172a;
+  border-color: #1f2937;
+}
+
+[data-theme="dark"] .availability-section {
+  background: #0b1220;
+  border-color: #1f2937;
+}
+
+[data-theme="dark"] .availability-section-title { color: #e5e7eb; }
+
+[data-theme="dark"] .availability-day { color: #e5e7eb; }
+[data-theme="dark"] .availability-label { color: #cbd5e1; }
+[data-theme="dark"] .muted { color: #94a3b8; }
+
+[data-theme="dark"] .chip.free {
+  background: rgba(22,101,52,0.18);
+  color: #bbf7d0;
+  border-color: rgba(34,197,94,0.45);
+}
+
+[data-theme="dark"] .chip.clash {
+  background: rgba(185,28,28,0.16);
+  color: #fecdd3;
+  border-color: rgba(248,113,113,0.35);
+}
+
+[data-theme="dark"] .chip.selected {
+  background: rgba(7,89,133,0.20);
+  color: #bae6fd;
+  border-color: rgba(56,189,248,0.35);
 }
 
 /* Dark mode: dark header with orange branding */
@@ -997,6 +1354,28 @@ body {
 [data-theme="dark"] .selected-course-tag {
   background-color: rgba(249,115,22,0.10);
   border-color: rgba(249,115,22,0.35);
+  color: #e5e7eb;
+}
+[data-theme="dark"] .selected-course-tag strong { color: var(--accent-300); }
+
+/* Dark mode: course search suggestions */
+[data-theme="dark"] .search-dropdown {
+  background: #0b1220;
+  border-color: #334155;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.45);
+}
+
+[data-theme="dark"] .search-dropdown-item {
+  color: #e5e7eb;
+  border-bottom-color: #1f2937;
+}
+
+[data-theme="dark"] .search-dropdown-item:hover {
+  background-color: #111827;
+}
+
+[data-theme="dark"] .search-dropdown-item strong {
+  color: var(--accent-300);
 }
 [data-theme="dark"] option { color: #e5e7eb; background: #0f172a; }
 
@@ -1015,9 +1394,9 @@ body {
   background: #1e293b;
 }
 [data-theme="dark"] .total-credits { 
-  background: #1e293b;
-  color: var(--accent-300);
-  border-top: 1px solid var(--accent-600);
+  background: linear-gradient(90deg, rgba(234,88,12,0.18) 0%, rgba(249,115,22,0.12) 100%);
+  color: #fcd9bd;
+  border-top: 1px solid rgba(249,115,22,0.55);
 }
 [data-theme="dark"] .overflow-menu,
 [data-theme="dark"] .share-menu { background: #0b1220; color: #e5e7eb; border-color: #1f2937; box-shadow: 0 10px 26px rgba(0,0,0,0.4); }
@@ -1181,6 +1560,10 @@ body {
   border-collapse: collapse;
 }
 
+.selected-courses-table {
+  overflow-x: auto;
+}
+
 .selected-courses th {
   background: #d9efe5;
   padding: 10px;
@@ -1213,10 +1596,79 @@ body {
    TOTAL CREDITS
 ========================================================= */
 .total-credits {
-  background: #f3f4f6;
+  background: linear-gradient(90deg, #fff7ed 0%, #ffedd5 100%);
+  color: #9a3412;
+  font-weight: 600;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-top: 1px solid #fed7aa;
+}
+
+.total-credits__left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.total-credits__label {
+  letter-spacing: 0.5px;
+  color: #9a3412;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.total-credits__pill {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 16px;
+  line-height: 1;
+  min-width: 52px;
   text-align: center;
-  font-weight: bold;
-  padding: 10px;
+  box-shadow: 0 8px 18px rgba(234,88,12,0.18);
+}
+
+.total-credits__right {
+  color: #4b5563;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.total-credits__meta {
+  background: #fff7ed;
+  padding: 7px 12px;
+  border-radius: 10px;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .total-credits {
+    position: sticky;
+    bottom: 0;
+    z-index: 8;
+    background: rgba(243,244,246,0.92);
+    backdrop-filter: blur(10px);
+    padding: 14px 16px;
+    box-shadow: 0 -10px 26px rgba(0,0,0,0.12);
+  }
+
+  [data-theme="dark"] .total-credits {
+    background: rgba(30,41,59,0.9);
+    box-shadow: 0 -10px 24px rgba(0,0,0,0.45);
+  }
+
+  .total-credits__label { font-size: 12px; }
+  .total-credits__pill { font-size: 15px; padding: 8px 12px; }
+  .total-credits__meta { font-size: 12px; }
 }
 
 /* =========================================================
