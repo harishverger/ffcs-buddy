@@ -1581,6 +1581,65 @@ body {
   background: #f9fafb;
 }
 
+.plan-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f8fafc;
+}
+
+.plan-actions-left,
+.plan-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.plan-input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  min-width: 160px;
+  font-size: 13px;
+}
+
+.plan-select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 13px;
+}
+
+.plan-btn {
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.plan-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,0.06); }
+.plan-btn:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+.plan-btn.danger { border-color: #fecdd3; color: #b91c1c; background: #fff1f2; }
+.plan-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: none; }
+
+.plan-warning {
+  margin: 10px 12px;
+  padding: 10px 12px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
 .remove-btn {
   cursor: pointer;
   font-weight: bold;
@@ -1651,6 +1710,11 @@ body {
 }
 
 @media (max-width: 768px) {
+  .plan-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .total-credits {
     position: sticky;
     bottom: 0;
