@@ -130,7 +130,7 @@ export const CREDIT_RULES = {
 
   /* =====================================================
      2 CREDIT SUBJECTS
-     (THEORY ONLY – single slot)
+     (THEORY ONLY – single slot OR LAB ONLY)
   ===================================================== */
   2: {
     TH: {
@@ -138,6 +138,10 @@ export const CREDIT_RULES = {
         "A1","A2","B1","B2","C1","C2","D1","D2","E1","E2","F1","F2","G1","G2"
       ],
       lab: []
+    },
+    LAB: {
+      theory: [],
+      lab: LAB_PAIRS
     }
   },
 

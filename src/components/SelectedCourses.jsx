@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { TIMETABLE, TIME_COLUMNS } from "../data/timetableData";
+import ShareModal from "./ShareModal";
 
 export default function SelectedCourses({
   courses,
@@ -12,6 +13,7 @@ export default function SelectedCourses({
 }) {
   const [planName, setPlanName] = useState("");
   const [selectedPlanId, setSelectedPlanId] = useState("");
+  const [showShareModal, setShowShareModal] = useState(false);
   const totalCredits = courses.reduce(
     (sum, c) => sum + Number(c.credit || 0),
     0
@@ -31,18 +33,6 @@ export default function SelectedCourses({
       return window.btoa(unescape(encodeURIComponent(json)));
     } catch (e) {
       return "";
-    }
-  };
-
-  const copyShareLink = async () => {
-    const encoded = encodePlan();
-    if (!encoded) return;
-    const url = `${window.location.origin}${window.location.pathname}?plan=${encoded}`;
-    try {
-      await navigator.clipboard.writeText(url);
-      alert("Share link copied to clipboard");
-    } catch (e) {
-      alert("Could not copy. Please copy manually: " + url);
     }
   };
 
@@ -196,10 +186,18 @@ export default function SelectedCourses({
         </div>
 
         <div className="plan-actions-right">
-          <button className="plan-btn" onClick={copyShareLink}>Copy Share Link</button>
+          <button className="plan-btn" onClick={() => setShowShareModal(true)}>Share</button>
           <button className="plan-btn" onClick={exportIcs}>Export ICS</button>
         </div>
       </div>
+
+      {showShareModal && (
+        <ShareModal
+          courses={courses}
+          manualSlots={manualSlots}
+          onClose={() => setShowShareModal(false)}
+        />
+      )}
 
       {creditWarning && (
         <div className="plan-warning">High credit load — consider reducing below 27.</div>

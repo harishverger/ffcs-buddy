@@ -203,6 +203,201 @@ body {
 
 .share-menu button:hover { background: #f3f4f6; }
 
+/* ===== SHARE MODAL ===== */
+.share-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.share-modal-content {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.share-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.share-modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #111827;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.close-btn:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.share-modal-link {
+  padding: 20px;
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.share-link-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: monospace;
+  color: #111827;
+  background: #f9fafb;
+}
+
+.copy-link-btn {
+  padding: 10px 14px;
+  background: var(--accent-600);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.12s;
+}
+
+.copy-link-btn:hover {
+  background: var(--accent-700);
+  transform: translateY(-1px);
+}
+
+.copy-link-btn:active {
+  transform: translateY(0);
+}
+
+.share-modal-divider {
+  padding: 12px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.share-buttons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 20px;
+}
+
+.share-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #111827;
+}
+
+.share-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.share-option svg {
+  width: 28px;
+  height: 28px;
+}
+
+.share-option.whatsapp { color: #25d366; border-color: #25d366; }
+.share-option.whatsapp:hover { background: #e7fce3; }
+
+.share-option.telegram { color: #0088cc; border-color: #0088cc; }
+.share-option.telegram:hover { background: #e3f2fd; }
+
+.share-option.facebook { color: #1877f2; border-color: #1877f2; }
+.share-option.facebook:hover { background: #e3f2fd; }
+
+.share-option.twitter { color: #1da1f2; border-color: #1da1f2; }
+.share-option.twitter:hover { background: #e3f2fd; }
+
+.share-option.linkedin { color: #0a66c2; border-color: #0a66c2; }
+.share-option.linkedin:hover { background: #e3f2fd; }
+
+.share-option.email { color: #ea4335; border-color: #ea4335; }
+.share-option.email:hover { background: #ffebee; }
+
+.share-option.native { color: var(--accent-600); border-color: var(--accent-600); }
+.share-option.native:hover { background: var(--accent-50); }
+
+.share-modal-footer {
+  padding: 16px 20px;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.share-modal-footer p {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
 .overflow-wrap { position: relative; }
 
 .overflow-btn {
@@ -1404,6 +1599,150 @@ body {
 [data-theme="dark"] .share-menu button { background: transparent; border: none; }
 [data-theme="dark"] .overflow-menu button:hover,
 [data-theme="dark"] .share-menu button:hover { background: #111827; }
+[data-theme="dark"] .plan-actions {
+  background: #0b1220;
+  border-bottom-color: #1f2937;
+}
+
+[data-theme="dark"] .plan-input,
+[data-theme="dark"] .plan-select {
+  background: #0f172a;
+  border-color: #334155;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .plan-input::placeholder {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .plan-input:focus,
+[data-theme="dark"] .plan-select:focus {
+  border-color: var(--accent-600);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.25);
+}
+
+[data-theme="dark"] .plan-btn {
+  background: #1e293b;
+  border-color: #334155;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .plan-btn:hover {
+  background: #334155;
+}
+
+[data-theme="dark"] .plan-btn.danger {
+  background: rgba(185,28,28,0.16);
+  border-color: rgba(248,113,113,0.35);
+  color: #fecdd3;
+}
+
+[data-theme="dark"] .plan-btn.danger:hover {
+  background: rgba(185,28,28,0.25);
+}
+
+[data-theme="dark"] .plan-select option {
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .share-modal-content {
+  background: #0b1220;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .share-modal-header {
+  border-bottom-color: #1f2937;
+}
+
+[data-theme="dark"] .share-modal-header h2 {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .close-btn {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .close-btn:hover {
+  background: #1f2937;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .share-modal-link {
+  border-bottom-color: #1f2937;
+}
+
+[data-theme="dark"] .share-link-input {
+  background: #0f172a;
+  border-color: #334155;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .copy-link-btn {
+  background: var(--accent-600);
+  color: white;
+}
+
+[data-theme="dark"] .copy-link-btn:hover {
+  background: var(--accent-700);
+}
+
+[data-theme="dark"] .share-modal-divider {
+  color: #6b7280;
+}
+
+[data-theme="dark"] .share-option {
+  background: #1f2937;
+  border-color: #334155;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .share-option:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .share-option.whatsapp:hover {
+  background: rgba(37, 211, 102, 0.1);
+}
+
+[data-theme="dark"] .share-option.telegram:hover {
+  background: rgba(0, 136, 204, 0.1);
+}
+
+[data-theme="dark"] .share-option.facebook:hover {
+  background: rgba(24, 119, 242, 0.1);
+}
+
+[data-theme="dark"] .share-option.twitter:hover {
+  background: rgba(29, 161, 242, 0.1);
+}
+
+[data-theme="dark"] .share-option.linkedin:hover {
+  background: rgba(10, 102, 194, 0.1);
+}
+
+[data-theme="dark"] .share-option.email:hover {
+  background: rgba(234, 67, 53, 0.1);
+}
+
+[data-theme="dark"] .share-option.native {
+  color: var(--accent-300);
+  border-color: var(--accent-600);
+}
+
+[data-theme="dark"] .share-option.native:hover {
+  background: rgba(249, 115, 22, 0.1);
+}
+
+[data-theme="dark"] .share-modal-footer {
+  background: #1f2937;
+  border-top-color: #334155;
+}
+
+[data-theme="dark"] .share-modal-footer p {
+  color: #9ca3af;
+}
+
 [data-theme="dark"] .share-btn-desktop,
 [data-theme="dark"] .theme-toggle {
   border-color: var(--accent-600);
